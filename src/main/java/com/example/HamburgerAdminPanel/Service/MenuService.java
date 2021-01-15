@@ -8,8 +8,10 @@ import java.util.Optional;
 public interface MenuService {
     Optional<Menu> findByMenusId(String id);
     List<Menu> findByMenuType(String type);
+    List<Menu> findAllMenuItems();
     Menu findByMenuItem(String itemName);
-    void saveMenuItem(List<Menu> menu);
+    void saveAllMenuItems(List<Menu> menu);
+    void saveMenuItem(Menu menu);
     void updateMenuItem(String menuId, Menu updatedMenu);
     void deleteMenuItem(String menuId);
     void deleteAll();

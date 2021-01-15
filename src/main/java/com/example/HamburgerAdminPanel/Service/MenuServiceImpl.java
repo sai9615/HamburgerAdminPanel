@@ -4,10 +4,12 @@ import com.example.HamburgerAdminPanel.Entity.Menu;
 import com.example.HamburgerAdminPanel.Exception.ResourceNotFoundException;
 import com.example.HamburgerAdminPanel.Repository.MenuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class MenuServiceImpl implements MenuService {
 
     @Autowired
@@ -56,11 +58,19 @@ public class MenuServiceImpl implements MenuService {
     }
 
     /**
+     * @param menuList
+     */
+    @Override
+    public void saveAllMenuItems(List<Menu> menuList) {
+        menuList.forEach(item -> menuRepository.save(item));
+    }
+
+    /**
      * @param menu
      */
     @Override
-    public void saveMenuItem(List<Menu> menu) {
-        menu.forEach(item -> menuRepository.save(item));
+    public void saveMenuItem(Menu menu) {
+        menuRepository.save(menu);
     }
 
     /**
@@ -76,7 +86,8 @@ public class MenuServiceImpl implements MenuService {
         menu.ifPresent(menuItem -> {
             menuItem.setMenuType(updatedMenu.getMenuType());
             menuItem.setMenuItem(updatedMenu.getMenuItem());
-            menuItem.setCost(updatedMenu.getCost());
+            menuItem.setPrice(updatedMenu.getPrice());
+            menuRepository.save(menuItem);
         });
     }
 
@@ -91,6 +102,14 @@ public class MenuServiceImpl implements MenuService {
         } else {
             menuRepository.deleteById(menuId);
         }
+    }
+
+    /**
+     * @return list of menu items
+     */
+    @Override
+    public List<Menu> findAllMenuItems(){
+        return menuRepository.findAll();
     }
 
     @Override
