@@ -24,7 +24,7 @@ public class MenuController {
             List<Menu> menus = menuService.findAllMenuItems();
             return new ResponseEntity<>(menus, HttpStatus.OK);
         } catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -60,16 +60,6 @@ public class MenuController {
         try {
             menuService.saveAllMenuItems(menu);
             return new ResponseEntity<>("Created new menu items", HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @PostMapping(value = "/menu/menuItem")
-    public ResponseEntity<?> createMenuItem(@RequestBody Menu menu){
-        try {
-            menuService.saveMenuItem(menu);
-            return new ResponseEntity<>("Created new menu item", HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -11,7 +11,6 @@ public interface MenuService {
     List<Menu> findAllMenuItems();
     Menu findByMenuItem(String itemName);
     void saveAllMenuItems(List<Menu> menu);
-    void saveMenuItem(Menu menu);
     void updateMenuItem(String menuId, Menu updatedMenu);
     void deleteMenuItem(String menuId);
     void deleteAll();

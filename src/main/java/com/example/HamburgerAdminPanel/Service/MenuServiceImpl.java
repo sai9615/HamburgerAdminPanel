@@ -66,14 +66,6 @@ public class MenuServiceImpl implements MenuService {
     }
 
     /**
-     * @param menu
-     */
-    @Override
-    public void saveMenuItem(Menu menu) {
-        menuRepository.save(menu);
-    }
-
-    /**
      * @param menuId
      * @param updatedMenu
      */

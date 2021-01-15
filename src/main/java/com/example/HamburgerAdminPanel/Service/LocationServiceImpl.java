@@ -48,12 +48,13 @@ public class LocationServiceImpl implements LocationService{
     }
 
     /**
-     * @param location
+     * @param locations
      */
     @Override
-    public void saveLocation(List<Location> location){
-        location.forEach(loc->locationRepository.save(loc));
+    public void saveLocations(List<Location> locations){
+        locations.forEach(loc->locationRepository.save(loc));
     }
+
 
     /**
      * @param id
