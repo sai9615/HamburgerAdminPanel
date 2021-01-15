@@ -1,7 +1,6 @@
 package com.example.HamburgerAdminPanel.Controller;
 
 import com.example.HamburgerAdminPanel.Entity.Location;
-import com.example.HamburgerAdminPanel.Repository.LocationRepository;
 import com.example.HamburgerAdminPanel.Service.LocationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,35 +16,63 @@ public class LocationController {
     LocationServiceImpl locationService;
 
     @GetMapping(value = "/location/{id}")
-    public Location findByLocationId(@PathVariable("id") String locationId) {
-            return locationService.findByLocationsId(locationId);
-    }
-
-    @PostMapping(value = "/location")
-    public ResponseEntity<?> saveLocation(@RequestBody List<Location> location) {
-        locationService.saveLocation(location);
-        return new ResponseEntity<>("Location added successfully", HttpStatus.OK);
-    }
-
-
-    @PutMapping(value = "/location/{id}")
-    public ResponseEntity<?> updateLocation(@PathVariable("id") String id, @RequestBody Location location){
-        locationService.updateLocation(id, location);
-        return new ResponseEntity<>("Location updated successfully",HttpStatus.OK);
+    public ResponseEntity<?> findByLocationId(@PathVariable("id") String locationId) {
+        try{
+            return new ResponseEntity<>(locationService.findByLocationsId(locationId), HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping(value = "/location")
-    public List<Location>  findAllLocations() {
-        return locationService.findAllLocations();
+    public ResponseEntity<?>  findAllLocations() {
+        try {
+            List<Location> locations =locationService.findAllLocations();
+            return new ResponseEntity<>(locations, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping(value = "/location")
+    public ResponseEntity<?> saveLocations(@RequestBody List<Location> location) {
+        try {
+            locationService.saveLocations(location);
+            return new ResponseEntity<>("Created new Location's", HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping(value = "/location/{id}")
+    public ResponseEntity<?> updateLocation(@PathVariable("id") String id, @RequestBody Location location){
+        try{
+            locationService.updateLocation(id, location);
+            return new ResponseEntity<>("Location updated successfully",HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+        }
+
     }
 
     @DeleteMapping(value = "/location/{id}")
-    public void deleteLocationById(@PathVariable("id") String id){
-        locationService.deleteById(id);
+    public ResponseEntity<?> deleteLocationById(@PathVariable("id") String id){
+        try {
+            locationService.deleteById(id);
+            return new ResponseEntity<>("Deleted item with id: "+id, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+
     }
 
     @DeleteMapping(value = "/location")
-    public void deleteAllLoctions(){
-        locationService.deleteAll();
+    public ResponseEntity<?> deleteAllLocations(){
+        try {
+            locationService.deleteAll();
+            return new ResponseEntity<>("Deleted all items", HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
