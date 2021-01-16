@@ -3,16 +3,16 @@ package com.example.HamburgerAdminPanel.Controller;
 import com.example.HamburgerAdminPanel.Entity.Menu;
 import com.example.HamburgerAdminPanel.Service.MenuServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api")
+@EnableSwagger2
 public class MenuController {
 
     @Autowired
@@ -55,7 +55,7 @@ public class MenuController {
        }
     }
 
-    @PostMapping(value = "/menu/menuItems")
+    @PostMapping(value = "/menu")
     public ResponseEntity<?> createMenuItem(@RequestBody List<Menu> menu){
         try {
             menuService.saveAllMenuItems(menu);
