@@ -5,9 +5,12 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ReservationRepository extends MongoRepository<Reservation, String> {
-    List<Reservation> findByFirstName(String firstName);
-    List<Reservation> findByLastName(String lastName);
+
+    Optional<Reservation> findByFirstName(String firstName);
+    Optional<Reservation> findByLastName(String lastName);
+    Optional<Reservation> findByReservationId(String id);
 }
