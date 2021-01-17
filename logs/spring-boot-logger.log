@@ -27,3 +27,51 @@
 2021-01-16 01:23:34,711 INFO com.mongodb.diagnostics.logging.SLF4JLogger [http-nio-8080-exec-2] Opened connection [connectionId{localValue:3, serverValue:146}] to localhost:27017
 2021-01-16 01:25:01,151 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [SpringContextShutdownHook] Shutting down ExecutorService 'applicationTaskExecutor'
 2021-01-16 01:25:01,180 INFO com.mongodb.diagnostics.logging.SLF4JLogger [SpringContextShutdownHook] Closed connection [connectionId{localValue:3, serverValue:146}] to localhost:27017 because the pool has been closed.
+2021-01-16 20:54:52,656 INFO org.springframework.boot.StartupInfoLogger [main] Starting HamburgerAdminPanelApplication using Java 15.0.1 on saimilind-svf15319snb with PID 119074 (/home/saimilind/IdeaProjects/HamburgerAdminPanel/target/classes started by saimilind in /home/saimilind/IdeaProjects/HamburgerAdminPanel)
+2021-01-16 20:54:52,686 DEBUG org.springframework.boot.StartupInfoLogger [main] Running with Spring Boot v2.4.1, Spring v5.3.2
+2021-01-16 20:54:52,687 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2021-01-16 20:54:54,505 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2021-01-16 20:54:54,616 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 90 ms. Found 3 MongoDB repository interfaces.
+2021-01-16 20:54:55,833 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2021-01-16 20:54:55,868 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2021-01-16 20:54:55,869 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2021-01-16 20:54:55,869 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.41]
+2021-01-16 20:54:56,014 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2021-01-16 20:54:56,014 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 3176 ms
+2021-01-16 20:54:56,338 INFO com.mongodb.diagnostics.logging.SLF4JLogger [main] Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2021-01-16 20:54:56,507 INFO com.mongodb.diagnostics.logging.SLF4JLogger [cluster-rtt-ClusterId{value='600398f0ef2fbd01816a8304', description='null'}-localhost:27017] Opened connection [connectionId{localValue:1, serverValue:147}] to localhost:27017
+2021-01-16 20:54:56,510 INFO com.mongodb.diagnostics.logging.SLF4JLogger [cluster-ClusterId{value='600398f0ef2fbd01816a8304', description='null'}-localhost:27017] Opened connection [connectionId{localValue:2, serverValue:148}] to localhost:27017
+2021-01-16 20:54:56,510 INFO com.mongodb.diagnostics.logging.SLF4JLogger [cluster-ClusterId{value='600398f0ef2fbd01816a8304', description='null'}-localhost:27017] Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=6, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=109920486}
+2021-01-16 20:54:57,809 INFO springfox.documentation.spring.web.PropertySourcedRequestMappingHandlerMapping [main] Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2021-01-16 20:54:57,916 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2021-01-16 20:54:58,087 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2021-01-16 20:54:58,158 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2021-01-16 20:54:58,160 INFO springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper [main] Context refreshed
+2021-01-16 20:54:58,199 INFO springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper [main] Found 1 custom documentation plugin(s)
+2021-01-16 20:54:58,253 INFO springfox.documentation.spring.web.scanners.ApiListingReferenceScanner [main] Scanning for api listing references
+2021-01-16 20:54:58,836 INFO org.springframework.boot.StartupInfoLogger [main] Started HamburgerAdminPanelApplication in 7.617 seconds (JVM running for 10.338)
+2021-01-16 20:55:12,840 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [SpringContextShutdownHook] Shutting down ExecutorService 'applicationTaskExecutor'
+2021-01-16 20:57:17,583 INFO org.springframework.boot.StartupInfoLogger [main] Starting HamburgerAdminPanelApplication using Java 15.0.1 on saimilind-svf15319snb with PID 119239 (/home/saimilind/IdeaProjects/HamburgerAdminPanel/target/classes started by saimilind in /home/saimilind/IdeaProjects/HamburgerAdminPanel)
+2021-01-16 20:57:17,588 DEBUG org.springframework.boot.StartupInfoLogger [main] Running with Spring Boot v2.4.1, Spring v5.3.2
+2021-01-16 20:57:17,613 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2021-01-16 20:57:19,461 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2021-01-16 20:57:19,560 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 94 ms. Found 3 MongoDB repository interfaces.
+2021-01-16 20:57:20,145 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2021-01-16 20:57:20,164 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2021-01-16 20:57:20,165 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2021-01-16 20:57:20,166 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.41]
+2021-01-16 20:57:20,277 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2021-01-16 20:57:20,278 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2413 ms
+2021-01-16 20:57:20,649 INFO com.mongodb.diagnostics.logging.SLF4JLogger [main] Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2021-01-16 20:57:20,727 INFO com.mongodb.diagnostics.logging.SLF4JLogger [cluster-ClusterId{value='600399804d307558877abeb9', description='null'}-localhost:27017] Opened connection [connectionId{localValue:2, serverValue:150}] to localhost:27017
+2021-01-16 20:57:20,727 INFO com.mongodb.diagnostics.logging.SLF4JLogger [cluster-rtt-ClusterId{value='600399804d307558877abeb9', description='null'}-localhost:27017] Opened connection [connectionId{localValue:1, serverValue:149}] to localhost:27017
+2021-01-16 20:57:20,728 INFO com.mongodb.diagnostics.logging.SLF4JLogger [cluster-ClusterId{value='600399804d307558877abeb9', description='null'}-localhost:27017] Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=6, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=24047306}
+2021-01-16 20:57:21,648 INFO springfox.documentation.spring.web.PropertySourcedRequestMappingHandlerMapping [main] Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2021-01-16 20:57:21,752 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2021-01-16 20:57:21,903 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2021-01-16 20:57:21,924 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2021-01-16 20:57:21,926 INFO springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper [main] Context refreshed
+2021-01-16 20:57:21,946 INFO springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper [main] Found 1 custom documentation plugin(s)
+2021-01-16 20:57:21,994 INFO springfox.documentation.spring.web.scanners.ApiListingReferenceScanner [main] Scanning for api listing references
+2021-01-16 20:57:22,305 INFO org.springframework.boot.StartupInfoLogger [main] Started HamburgerAdminPanelApplication in 5.448 seconds (JVM running for 6.659)
+2021-01-16 20:57:48,028 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [SpringContextShutdownHook] Shutting down ExecutorService 'applicationTaskExecutor'
