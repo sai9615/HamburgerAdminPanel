@@ -2,7 +2,9 @@
 
 * Before you run the app make sure you have mongoDB installed on your local system and MongoDB Compass to view the data in DB.
 * Can view all the endpoints by simply running the app and searching for the URL mentioned below.
+* Make sure to set your system environment variable by running "export MONGODB_URI=your Mongo Atlas Cluster connection string" in terminal. 
 * **URL:** http://localhost:8080/swagger-ui.html
+* **HOSTED APP URL:** https://hamburgeradminpanel.herokuapp.com/swagger-ui.html 
 
 ### App Details
 * **Entity (package com.example.HamburgerAdminPanel.Entity):** contains location, menu and reservation entities, used to define how every collection(data) is structured. 
