@@ -17,7 +17,7 @@ public class LocationController {
     @Autowired
     LocationServiceImpl locationService;
 
-    @GetMapping(value = "/location/{id}")
+    @GetMapping(value = "/locations/{id}")
     public ResponseEntity<?> findByLocationId(@PathVariable("id") String locationId) {
         try{
             return new ResponseEntity<>(locationService.findByLocationsId(locationId), HttpStatus.OK);
@@ -26,7 +26,7 @@ public class LocationController {
         }
     }
 
-    @GetMapping(value = "/location")
+    @GetMapping(value = "/locations")
     public ResponseEntity<?>  findAllLocations() {
         try {
             List<Location> locations =locationService.findAllLocations();
@@ -36,7 +36,25 @@ public class LocationController {
         }
     }
 
-    @PostMapping(value = "/location")
+    @GetMapping(value = "/locations/search-nearest-location")
+    public ResponseEntity<?> searchNearByLocation(@RequestParam(required = true) String longitude, @RequestParam(required = true) String latitude){
+        try{
+            return new ResponseEntity<>(locationService.findNearByLocation(longitude, latitude), HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "locations/filter-by-status")
+    public ResponseEntity<?> searchByStatus(@RequestParam(required = true) String status){
+        try{
+            return new ResponseEntity<>(locationService.filterByStatus(Boolean.parseBoolean(status)), HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping(value = "/locations")
     public ResponseEntity<?> saveLocations(@RequestBody List<Location> location) {
         try {
             locationService.saveLocations(location);
@@ -46,7 +64,7 @@ public class LocationController {
         }
     }
 
-    @PutMapping(value = "/location/{id}")
+    @PutMapping(value = "/locations/{id}")
     public ResponseEntity<?> updateLocation(@PathVariable("id") String id, @RequestBody Location location){
         try{
             locationService.updateLocation(id, location);
@@ -57,7 +75,7 @@ public class LocationController {
 
     }
 
-    @DeleteMapping(value = "/location/{id}")
+    @DeleteMapping(value = "/locations/{id}")
     public ResponseEntity<?> deleteLocationById(@PathVariable("id") String id){
         try {
             locationService.deleteById(id);
@@ -68,7 +86,7 @@ public class LocationController {
 
     }
 
-    @DeleteMapping(value = "/location")
+    @DeleteMapping(value = "/locations")
     public ResponseEntity<?> deleteAllLocations(){
         try {
             locationService.deleteAll();

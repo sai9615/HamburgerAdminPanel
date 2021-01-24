@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface LocationRepository extends MongoRepository<Location, String> {
     Optional<Location> findByLocationId(String locationId);
+    List<Location> findByStatus(Boolean status);
 }

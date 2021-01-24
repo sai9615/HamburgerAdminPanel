@@ -8,8 +8,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 public class Menu {
 @Id
-private String menuId;
-private String menuType;
-private String menuItem;
+private String itemId;
+private String itemName;
+private String category;
+private Boolean status;
 private String price;
 }

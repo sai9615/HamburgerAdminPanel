@@ -18,7 +18,7 @@ public class MenuController {
     @Autowired
     MenuServiceImpl menuService;
 
-    @GetMapping(value = "/menu")
+    @GetMapping(value = "/menus")
     public ResponseEntity<?> findAllMenuItems(){
         try {
             List<Menu> menus = menuService.findAllMenuItems();
@@ -28,25 +28,25 @@ public class MenuController {
         }
     }
 
-    @GetMapping(value = "/menu/{menuId}")
-    public ResponseEntity<?> findByMenuId(@PathVariable("menuId") String id){
+    @GetMapping(value = "/menus/{itemId}")
+    public ResponseEntity<?> findByItemId(@PathVariable("itemId") String id){
         try {
-            return new ResponseEntity<>(menuService.findByMenusId(id), HttpStatus.OK);
+            return new ResponseEntity<>(menuService.findByItemId(id), HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
-    @GetMapping(value = "/menu/menuType")
-    public ResponseEntity<?> findByMenuType(@RequestParam String type){
+    @GetMapping(value = "/menus/categories")
+    public ResponseEntity<?> findByCategory(@RequestParam String type){
         try{
-            return new ResponseEntity<>(menuService.findByMenuType(type), HttpStatus.OK);
+            return new ResponseEntity<>(menuService.findByCategory(type), HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
-    @GetMapping(value = "/menu/menuItem")
+    @GetMapping(value = "/menus/menu-items")
     public ResponseEntity<?> findByMenuItem(@RequestParam String name){
        try{
            return new ResponseEntity<>(menuService.findByMenuItem(name), HttpStatus.OK);
@@ -55,7 +55,16 @@ public class MenuController {
        }
     }
 
-    @PostMapping(value = "/menu")
+    @GetMapping(value = "/menus/filter-by-status")
+    public ResponseEntity<?> filterByStatus(@RequestParam String status){
+        try{
+            return new ResponseEntity<>(menuService.filterByStatus(Boolean.parseBoolean(status)), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping(value = "/menus")
     public ResponseEntity<?> createMenuItem(@RequestBody List<Menu> menu){
         try {
             menuService.saveAllMenuItems(menu);
@@ -65,7 +74,7 @@ public class MenuController {
         }
     }
 
-    @PutMapping(value = "/menu/menuItem/{id}")
+    @PutMapping(value = "/menus/menu-item/{id}")
     public ResponseEntity<?> updateMenuItem(@PathVariable("id") String
                                                 id, @RequestBody Menu menu){
         try {
@@ -76,7 +85,7 @@ public class MenuController {
         }
     }
 
-    @DeleteMapping(value="/menu/{id}")
+    @DeleteMapping(value="/menus/{id}")
     public ResponseEntity<?> deleteMenuItem(@PathVariable("id") String id){
         try {
             menuService.deleteMenuItem(id);
@@ -86,7 +95,7 @@ public class MenuController {
         }
     }
 
-    @DeleteMapping(value = "/menu")
+    @DeleteMapping(value = "/menus")
     public ResponseEntity<?> deleteAllMenuItems(){
         try {
             menuService.deleteAll();

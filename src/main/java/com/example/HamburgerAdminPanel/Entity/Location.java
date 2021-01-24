@@ -13,4 +13,5 @@ public class Location {
     private String latitude;
     private String address;
     private String phone;
+    private Boolean status;
 }

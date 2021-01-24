@@ -9,6 +9,8 @@ public interface LocationService {
     Location findByLocationsId(String id);
     void updateLocation(String id, Location loc);
     List<Location> findAllLocations();
+    Location findNearByLocation(String longitude, String Latitude);
+    List<Location> filterByStatus(Boolean status);
     void saveLocations(List<Location> loc);
     void deleteById(String id);
     void deleteAll();

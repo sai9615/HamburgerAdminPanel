@@ -1,11 +1,13 @@
 package com.example.HamburgerAdminPanel.Service;
 
 import com.example.HamburgerAdminPanel.Entity.Menu;
+import com.example.HamburgerAdminPanel.Exception.InvalidInputException;
 import com.example.HamburgerAdminPanel.Exception.ResourceNotFoundException;
 import com.example.HamburgerAdminPanel.Repository.MenuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,26 +22,42 @@ public class MenuServiceImpl implements MenuService {
      * @return menu object
      */
     @Override
-    public Optional<Menu> findByMenusId(String id) {
-        Optional<Menu> menu = menuRepository.findByMenuId(id);
+    public Menu findByItemId(String id) {
+        Optional<Menu> menu = menuRepository.findByItemId(id);
         if (menu.isEmpty()) {
             throw new ResourceNotFoundException("Menu item with id " + id + " not found");
         } else {
-            return menuRepository.findByMenuId(id);
+            Menu obj;
+            obj = menu.get();
+            if(Boolean.FALSE.equals(obj.getStatus())){
+                throw new ResourceNotFoundException("Menu item is in-active, please set the status to active to get item details");
+            }
+            return obj;
         }
     }
 
     /**
-     * @param type
+     * @param category
      * @return list of menu items of same menu type
      */
     @Override
-    public List<Menu> findByMenuType(String type) {
-        List<Menu> menu = menuRepository.findByMenuType(type);
+    public List<Menu> findByCategory(String category) {
+        Optional<List<Menu>> menu = menuRepository.findByCategory(category);
         if (menu.isEmpty()) {
-            throw new ResourceNotFoundException("Menu type " + type + " not found");
+            throw new InvalidInputException("Category " + category + " not found");
+        } else if(menu.get().isEmpty()){
+            throw new ResourceNotFoundException("Category " + category + " not found");
         } else {
-            return menu;
+            List<Menu> menuList = new ArrayList<>();
+            for(Menu obj: menu.get()){
+                if(Boolean.TRUE.equals(obj.getStatus())){
+                    menuList.add(obj);
+                }
+            }
+            if(menuList.isEmpty()){
+               throw new ResourceNotFoundException("All Menu item's in "+category+" are in-active, please set the status to active to get item details");
+            }
+            return menuList;
         }
     }
 
@@ -49,12 +67,26 @@ public class MenuServiceImpl implements MenuService {
      */
     @Override
     public Menu findByMenuItem(String itemName) {
-        Optional<Menu> menu = Optional.ofNullable(menuRepository.findByMenuItem(itemName));
+        Optional<Menu> menu = menuRepository.findByItemName(itemName);
         if (menu.isEmpty()) {
             throw new ResourceNotFoundException("Menu item  " + itemName + " not found");
         } else {
-            return menu.get();
+            Menu obj;
+            obj = menu.get();
+            if(Boolean.FALSE.equals(obj.getStatus())){
+                throw new ResourceNotFoundException("Menu item is in-active, please set the status to active to get item details");
+            }
+            return obj;
         }
+    }
+
+    @Override
+    public List<Menu> filterByStatus(Boolean status) {
+       Optional<List<Menu>> menuList = menuRepository.findByStatus(status);
+       if(menuList.isEmpty()){
+           throw new ResourceNotFoundException("No menu item with status " + status +" exist in database");
+       }
+       return menuList.get();
     }
 
     /**
@@ -66,33 +98,34 @@ public class MenuServiceImpl implements MenuService {
     }
 
     /**
-     * @param menuId
+     * @param itemId
      * @param updatedMenu
      */
     @Override
-    public void updateMenuItem(String menuId, Menu updatedMenu) {
-        Optional<Menu> menu = menuRepository.findByMenuId(menuId);
+    public void updateMenuItem(String itemId, Menu updatedMenu) {
+        Optional<Menu> menu = menuRepository.findByItemId(itemId);
         if (menu.isEmpty()) {
-            throw new ResourceNotFoundException("Menu item with id: " + menuId + " not found");
+            throw new ResourceNotFoundException("Menu item with id: " + itemId + " not found");
         }
         menu.ifPresent(menuItem -> {
-            menuItem.setMenuType(updatedMenu.getMenuType());
-            menuItem.setMenuItem(updatedMenu.getMenuItem());
+            menuItem.setCategory(updatedMenu.getCategory());
+            menuItem.setItemName(updatedMenu.getItemName());
             menuItem.setPrice(updatedMenu.getPrice());
+            menuItem.setStatus(updatedMenu.getStatus());
             menuRepository.save(menuItem);
         });
     }
 
     /**
-     * @param menuId
+     * @param itemId
      */
     @Override
-    public void deleteMenuItem(String menuId) {
-        Optional<Menu> menu = menuRepository.findByMenuId(menuId);
+    public void deleteMenuItem(String itemId) {
+        Optional<Menu> menu = menuRepository.findByItemId(itemId);
         if (menu.isEmpty()) {
-            throw new ResourceNotFoundException("Menu item with id: " + menuId + " not found");
+            throw new ResourceNotFoundException("Menu item with id: " + itemId + " not found");
         } else {
-            menuRepository.deleteById(menuId);
+            menuRepository.deleteById(itemId);
         }
     }
 
