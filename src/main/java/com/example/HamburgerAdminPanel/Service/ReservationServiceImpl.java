@@ -1,6 +1,5 @@
 package com.example.HamburgerAdminPanel.Service;
 
-import com.example.HamburgerAdminPanel.Entity.OpenHours;
 import com.example.HamburgerAdminPanel.Entity.Reservation;
 import com.example.HamburgerAdminPanel.Exception.InvalidInputException;
 import com.example.HamburgerAdminPanel.Exception.ResourceNotFoundException;
