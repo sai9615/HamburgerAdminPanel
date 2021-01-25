@@ -9,6 +9,7 @@ public interface MenuService {
     Menu findByItemId(String id);
     List<Menu> findByCategory(String type);
     List<Menu> findAllMenuItems();
+    List<Menu> findByMenuTypeAndCategory(String type, String category);
     Menu findByMenuItem(String itemName);
     List<Menu> filterByStatus(Boolean status);
     void saveAllMenuItems(List<Menu> menu);

@@ -13,4 +13,5 @@ public interface MenuRepository extends MongoRepository<Menu, String> {
     Optional<List<Menu>> findByCategory(String category);
     Optional<Menu> findByItemName(String menuItem);
     Optional<List<Menu>> findByStatus(Boolean status);
+    Optional<List<Menu>> findByMenuTypeAndCategory(String type, String category);
 }

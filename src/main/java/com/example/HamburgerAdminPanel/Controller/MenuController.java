@@ -64,6 +64,14 @@ public class MenuController {
         }
     }
 
+    @GetMapping(value = "/menus/filter-by-menutype-category")
+    public ResponseEntity<?> filterByCategoryAndMenuType(@RequestParam String menuType, @RequestParam String category){
+        try{
+            return new ResponseEntity<>(menuService.findByMenuTypeAndCategory(menuType, category), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
     @PostMapping(value = "/menus")
     public ResponseEntity<?> createMenuItem(@RequestBody List<Menu> menu){
         try {

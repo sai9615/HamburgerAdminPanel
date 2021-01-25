@@ -109,6 +109,7 @@ public class MenuServiceImpl implements MenuService {
         }
         menu.ifPresent(menuItem -> {
             menuItem.setCategory(updatedMenu.getCategory());
+            menuItem.setMenuType(updatedMenu.getMenuType());
             menuItem.setItemName(updatedMenu.getItemName());
             menuItem.setPrice(updatedMenu.getPrice());
             menuItem.setStatus(updatedMenu.getStatus());
@@ -135,6 +136,26 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public List<Menu> findAllMenuItems(){
         return menuRepository.findAll();
+    }
+
+    @Override
+    public List<Menu> findByMenuTypeAndCategory(String menuType, String category) {
+        Optional<List<Menu>> menus = menuRepository.findByMenuTypeAndCategory(menuType, category);
+        if(menus.isEmpty()){
+            throw new ResourceNotFoundException("Menu type " + menuType +  "and category "+ category+ " not found");
+        } else {
+            ArrayList<Menu> menuList = new ArrayList<>();
+            for(Menu menuObj: menus.get()){
+                if(Boolean.TRUE.equals(menuObj.getStatus())){
+                    menuList.add(menuObj);
+                }
+            }
+            if(!menuList.isEmpty()){
+                return menuList;
+            } else {
+                throw new ResourceNotFoundException("No active menu items found");
+            }
+        }
     }
 
     @Override
