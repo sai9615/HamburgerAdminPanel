@@ -9,7 +9,7 @@ public interface ReservationService {
     Reservation findByFirstName(String firstName);
     Reservation findByLastName(String LastName);
     Reservation findByReservationId(String id);
-    List<Reservation> findAllReservations();
+    List<Reservation> findAllReservations(int page, int size);
     void createReservation(List<Reservation> reservations);
     void updateReservation(String id, Reservation reservation);
     void deleteReservation(String id);

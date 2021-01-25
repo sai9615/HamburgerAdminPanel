@@ -4,6 +4,9 @@ import com.example.HamburgerAdminPanel.Entity.Location;
 import com.example.HamburgerAdminPanel.Exception.ResourceNotFoundException;
 import com.example.HamburgerAdminPanel.Repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -92,8 +95,9 @@ public class LocationServiceImpl implements LocationService{
     }
 
     @Override
-    public List<Location> filterByStatus(Boolean status) {
-        List<Location> locations = locationRepository.findByStatus(status);
+    public List<Location> filterByStatus(Boolean status, int page, int size) {
+        Pageable paging =  PageRequest.of(page,size);
+        List<Location> locations = locationRepository.findByStatus(status, paging);
         if(locations.isEmpty()){
             throw new ResourceNotFoundException("Locations with status doesn't exist");
         } else {
@@ -123,8 +127,10 @@ public class LocationServiceImpl implements LocationService{
      * @return list of location objects
      */
     @Override
-    public List<Location> findAllLocations() {
-        return locationRepository.findAll();
+    public List<Location> findAllLocations(int page, int size) {
+        Pageable paging =  PageRequest.of(page,size);
+        Page<Location> locations = locationRepository.findAll(paging);
+        return locations.getContent();
     }
 
     /**

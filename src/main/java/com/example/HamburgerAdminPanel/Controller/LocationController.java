@@ -27,9 +27,10 @@ public class LocationController {
     }
 
     @GetMapping(value = "/locations")
-    public ResponseEntity<?>  findAllLocations() {
+    public ResponseEntity<?>  findAllLocations(@RequestParam(defaultValue = "0") int page,
+                                               @RequestParam(defaultValue = "3") int size) {
         try {
-            List<Location> locations =locationService.findAllLocations();
+            List<Location> locations =locationService.findAllLocations(page, size);
             return new ResponseEntity<>(locations, HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -46,9 +47,10 @@ public class LocationController {
     }
 
     @GetMapping(value = "locations/filter-by-status")
-    public ResponseEntity<?> searchByStatus(@RequestParam(required = true) String status){
+    public ResponseEntity<?> searchByStatus(@RequestParam(required = true) String status, @RequestParam(defaultValue = "0") int page,
+                                            @RequestParam(defaultValue = "3") int size){
         try{
-            return new ResponseEntity<>(locationService.filterByStatus(Boolean.parseBoolean(status)), HttpStatus.OK);
+            return new ResponseEntity<>(locationService.filterByStatus(Boolean.parseBoolean(status), page, size), HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -5,6 +5,9 @@ import com.example.HamburgerAdminPanel.Exception.InvalidInputException;
 import com.example.HamburgerAdminPanel.Exception.ResourceNotFoundException;
 import com.example.HamburgerAdminPanel.Repository.MenuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -41,8 +44,9 @@ public class MenuServiceImpl implements MenuService {
      * @return list of menu items of same menu type
      */
     @Override
-    public List<Menu> findByCategory(String category) {
-        Optional<List<Menu>> menu = menuRepository.findByCategory(category);
+    public List<Menu> findByCategory(String category, int page, int size) {
+        Pageable paging =  PageRequest.of(page,size);
+        Optional<List<Menu>> menu = menuRepository.findByCategory(category, paging);
         if (menu.isEmpty()) {
             throw new InvalidInputException("Category " + category + " not found");
         } else if(menu.get().isEmpty()){
@@ -81,8 +85,9 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public List<Menu> filterByStatus(Boolean status) {
-       Optional<List<Menu>> menuList = menuRepository.findByStatus(status);
+    public List<Menu> filterByStatus(Boolean status, int page, int size) {
+        Pageable paging =  PageRequest.of(page,size);
+       Optional<List<Menu>> menuList = menuRepository.findByStatus(status,paging);
        if(menuList.isEmpty()){
            throw new ResourceNotFoundException("No menu item with status " + status +" exist in database");
        }
@@ -134,13 +139,16 @@ public class MenuServiceImpl implements MenuService {
      * @return list of menu items
      */
     @Override
-    public List<Menu> findAllMenuItems(){
-        return menuRepository.findAll();
+    public List<Menu> findAllMenuItems(int page, int size){
+        Pageable paging =  PageRequest.of(page,size);
+        Page<Menu> menu = menuRepository.findAll(paging);
+        return menu.getContent();
     }
 
     @Override
-    public List<Menu> findByMenuTypeAndCategory(String menuType, String category) {
-        Optional<List<Menu>> menus = menuRepository.findByMenuTypeAndCategory(menuType, category);
+    public List<Menu> findByMenuTypeAndCategory(String menuType, String category, int page, int size) {
+        Pageable paging =  PageRequest.of(page,size);
+        Optional<List<Menu>> menus = menuRepository.findByMenuTypeAndCategory(menuType, category, paging);
         if(menus.isEmpty()){
             throw new ResourceNotFoundException("Menu type " + menuType +  "and category "+ category+ " not found");
         } else {

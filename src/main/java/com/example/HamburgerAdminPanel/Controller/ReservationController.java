@@ -19,9 +19,10 @@ public class ReservationController {
     ReservationServiceImpl reservationService;
 
     @GetMapping("/reservations")
-    public ResponseEntity<?> getAllReservations(){
+    public ResponseEntity<?> getAllReservations(@RequestParam(defaultValue = "0") int page,
+                                                @RequestParam(defaultValue = "3") int size){
         try{
-            return new ResponseEntity<>(reservationService.findAllReservations(), HttpStatus.OK);
+            return new ResponseEntity<>(reservationService.findAllReservations(page, size), HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

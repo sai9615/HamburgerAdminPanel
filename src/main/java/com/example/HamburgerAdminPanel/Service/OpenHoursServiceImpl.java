@@ -5,6 +5,9 @@ import com.example.HamburgerAdminPanel.Exception.InvalidInputException;
 import com.example.HamburgerAdminPanel.Exception.ResourceNotFoundException;
 import com.example.HamburgerAdminPanel.Repository.OpenHoursRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -19,8 +22,9 @@ public class OpenHoursServiceImpl implements OpenHoursService{
     OpenHoursRepository openHoursRepository;
 
     @Override
-    public OpenHours findByDayOfWeek(String dayOfWeek) {
-        Optional<OpenHours> openHours = openHoursRepository.findByDayOfWeek(dayOfWeek);
+    public List<OpenHours> findByDayOfWeek(String dayOfWeek, int page, int size) {
+        Pageable paging =  PageRequest.of(page,size);
+        Optional<List<OpenHours>> openHours = openHoursRepository.findByDayOfWeek(dayOfWeek, paging);
         if (openHours.isEmpty()) {
             throw new ResourceNotFoundException("No such day found");
         } else {
@@ -38,13 +42,10 @@ public class OpenHoursServiceImpl implements OpenHoursService{
     }
 
     @Override
-    public List<OpenHours> getAllDays() {
-        List<OpenHours> openHours = openHoursRepository.findAll();
-        if (openHours.isEmpty()) {
-            throw new ResourceNotFoundException("No data in Database");
-        } else {
-            return openHours;
-        }
+    public List<OpenHours> getAllDays(int page, int size) {
+        Pageable paging =  PageRequest.of(page,size);
+        Page<OpenHours> openHours = openHoursRepository.findAll(paging);
+        return openHours.getContent();
     }
 
     @Override

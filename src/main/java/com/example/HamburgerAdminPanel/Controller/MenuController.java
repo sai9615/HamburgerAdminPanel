@@ -19,9 +19,10 @@ public class MenuController {
     MenuServiceImpl menuService;
 
     @GetMapping(value = "/menus")
-    public ResponseEntity<?> findAllMenuItems(){
+    public ResponseEntity<?> findAllMenuItems(@RequestParam(defaultValue = "0") int page,
+                                              @RequestParam(defaultValue = "3") int size){
         try {
-            List<Menu> menus = menuService.findAllMenuItems();
+            List<Menu> menus = menuService.findAllMenuItems(page ,size);
             return new ResponseEntity<>(menus, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -38,9 +39,10 @@ public class MenuController {
     }
 
     @GetMapping(value = "/menus/categories")
-    public ResponseEntity<?> findByCategory(@RequestParam String type){
+    public ResponseEntity<?> findByCategory(@RequestParam String type, @RequestParam(defaultValue = "0") int page,
+                                            @RequestParam(defaultValue = "3") int size){
         try{
-            return new ResponseEntity<>(menuService.findByCategory(type), HttpStatus.OK);
+            return new ResponseEntity<>(menuService.findByCategory(type, page, size), HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
@@ -56,18 +58,20 @@ public class MenuController {
     }
 
     @GetMapping(value = "/menus/filter-by-status")
-    public ResponseEntity<?> filterByStatus(@RequestParam String status){
+    public ResponseEntity<?> filterByStatus(@RequestParam String status, @RequestParam(defaultValue = "0") int page,
+                                            @RequestParam(defaultValue = "3") int size){
         try{
-            return new ResponseEntity<>(menuService.filterByStatus(Boolean.parseBoolean(status)), HttpStatus.OK);
+            return new ResponseEntity<>(menuService.filterByStatus(Boolean.parseBoolean(status), page, size), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping(value = "/menus/filter-by-menutype-category")
-    public ResponseEntity<?> filterByCategoryAndMenuType(@RequestParam String menuType, @RequestParam String category){
+    public ResponseEntity<?> filterByCategoryAndMenuType(@RequestParam String menuType, @RequestParam String category, @RequestParam(defaultValue = "0") int page,
+                                                         @RequestParam(defaultValue = "3") int size){
         try{
-            return new ResponseEntity<>(menuService.findByMenuTypeAndCategory(menuType, category), HttpStatus.OK);
+            return new ResponseEntity<>(menuService.findByMenuTypeAndCategory(menuType, category, page,size), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }

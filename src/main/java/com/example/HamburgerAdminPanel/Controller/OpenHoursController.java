@@ -1,8 +1,6 @@
 package com.example.HamburgerAdminPanel.Controller;
 
-import com.example.HamburgerAdminPanel.Entity.Menu;
 import com.example.HamburgerAdminPanel.Entity.OpenHours;
-import com.example.HamburgerAdminPanel.Service.OpenHoursService;
 import com.example.HamburgerAdminPanel.Service.OpenHoursServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,18 +19,20 @@ public class OpenHoursController {
     OpenHoursServiceImpl openHoursService;
 
     @GetMapping(value = "/open-hours")
-    public ResponseEntity<?> findAllOpenHours(){
+    public ResponseEntity<?> findAllOpenHours(@RequestParam(defaultValue = "0") int page,
+                                              @RequestParam(defaultValue = "3") int size){
         try {
-            return new ResponseEntity<>(openHoursService.getAllDays(), HttpStatus.OK);
+            return new ResponseEntity<>(openHoursService.getAllDays(page,size), HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping(value = "/open-hours/day-of-week")
-    public ResponseEntity<?> findByDayOfWeek(@RequestParam String day){
+    public ResponseEntity<?> findByDayOfWeek(@RequestParam String day, @RequestParam(defaultValue = "0") int page,
+                                             @RequestParam(defaultValue = "3") int size){
         try {
-            return new ResponseEntity<>(openHoursService.findByDayOfWeek(day), HttpStatus.OK);
+            return new ResponseEntity<>(openHoursService.findByDayOfWeek(day, page, size), HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -7,11 +7,11 @@ import java.util.Optional;
 
 public interface MenuService {
     Menu findByItemId(String id);
-    List<Menu> findByCategory(String type);
-    List<Menu> findAllMenuItems();
-    List<Menu> findByMenuTypeAndCategory(String type, String category);
+    List<Menu> findByCategory(String type, int page, int size);
+    List<Menu> findAllMenuItems(int page, int size);
+    List<Menu> findByMenuTypeAndCategory(String type, String category, int page, int size);
     Menu findByMenuItem(String itemName);
-    List<Menu> filterByStatus(Boolean status);
+    List<Menu> filterByStatus(Boolean status, int page, int size);
     void saveAllMenuItems(List<Menu> menu);
     void updateMenuItem(String menuId, Menu updatedMenu);
     void deleteMenuItem(String menuId);

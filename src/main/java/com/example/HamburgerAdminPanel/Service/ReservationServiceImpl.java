@@ -1,11 +1,15 @@
 package com.example.HamburgerAdminPanel.Service;
 
+import com.example.HamburgerAdminPanel.Entity.OpenHours;
 import com.example.HamburgerAdminPanel.Entity.Reservation;
 import com.example.HamburgerAdminPanel.Exception.InvalidInputException;
 import com.example.HamburgerAdminPanel.Exception.ResourceNotFoundException;
 import com.example.HamburgerAdminPanel.Repository.ReservationRepository;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -64,8 +68,10 @@ public class ReservationServiceImpl implements ReservationService {
      * @return all reservations
      */
     @Override
-    public List<Reservation> findAllReservations() {
-        return reservationRepository.findAll();
+    public List<Reservation> findAllReservations(int page, int size) {
+        Pageable paging =  PageRequest.of(page,size);
+        Page<Reservation> reservations = reservationRepository.findAll(paging);
+        return reservations.getContent();
     }
 
     /**
