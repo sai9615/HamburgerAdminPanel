@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
 import java.util.List;
 
 @RestController
@@ -42,6 +41,15 @@ public class OpenHoursController {
     public ResponseEntity<?> findByOpenHourId(@PathVariable("id") String id){
         try {
             return new ResponseEntity<>(openHoursService.findById(id), HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/open-hours/dates")
+    public ResponseEntity<?> findByDate(@RequestParam String date){
+        try {
+            return new ResponseEntity<>(openHoursService.findByDate(date), HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }

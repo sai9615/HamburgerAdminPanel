@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @RestController
 @RequestMapping(value = "/api")
 public class InterceptorController {
@@ -38,6 +40,16 @@ public class InterceptorController {
                                            @RequestParam(defaultValue = "3") int size){
         try{
             return new ResponseEntity<>(interceptorService.findByApiName(apiName, page, size), HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/interceptors/date")
+    public ResponseEntity<?> findByDate(@RequestParam Date date, @RequestParam(defaultValue = "0") int page,
+                                        @RequestParam(defaultValue = "3") int size){
+        try{
+            return new ResponseEntity<>(interceptorService.findAllByGivenDate(date, page, size), HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }

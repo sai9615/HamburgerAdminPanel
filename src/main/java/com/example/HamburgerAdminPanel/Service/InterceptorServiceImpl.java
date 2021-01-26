@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,6 +42,16 @@ public class InterceptorServiceImpl implements InterceptorService{
         Optional<List<Interceptor>> interceptor = interceptorRepository.findByApiName(apiName, paging);
         if(interceptor.isEmpty()){
             throw new ResourceNotFoundException("Interception with api name: "+apiName+" doesn't exist in database");
+        }
+        return interceptor.get();
+    }
+
+    @Override
+    public List<Interceptor> findAllByGivenDate(Date date, int page, int size) {
+        Pageable paging = PageRequest.of(page, size);
+        Optional<List<Interceptor>> interceptor = interceptorRepository.findAllByDate(date, paging);
+        if(interceptor.isEmpty()){
+            throw new ResourceNotFoundException("Interception on date: "+date.toString()+" doesn't exist in database");
         }
         return interceptor.get();
     }

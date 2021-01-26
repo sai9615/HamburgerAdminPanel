@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -49,20 +50,34 @@ public class OpenHoursServiceImpl implements OpenHoursService{
     }
 
     @Override
+    public OpenHours findByDate(String date) {
+        Optional<OpenHours> openHours;
+        try {
+            openHours = openHoursRepository.findByDate(new SimpleDateFormat("dd-MM-yyyy").parse(date));
+        } catch (ParseException e) {
+            throw new InvalidInputException("Invalid date");
+        }
+        if(openHours.isEmpty()){
+            throw new ResourceNotFoundException("No open hours on date: "+date+ " exist");
+        }
+        return openHours.get();
+    }
+
+    @Override
     public void postNewDays(List<OpenHours> openHours) {
         List<OpenHours> existingOpenHours = openHoursRepository.findAll();
         Date currentDate = new Date();
         openHours.forEach(openHour -> {
-                if (openHour.getFromTime().before(currentDate)) {
+                if (openHour.getDate().before(currentDate)) {
                     throw new InvalidInputException("Please select a date after current date for id: " +openHour.getId());
                 }
                 for (OpenHours openHrs : existingOpenHours) {
-                    if (openHour.getFromTime().equals(openHrs.getFromTime())) {
+                    if (openHour.getDate().equals(openHrs.getDate())) {
                         throw new InvalidInputException("Can't create a new open Hour due to existing open hour with id: " + openHrs.getId() + " on day " + openHrs.getToTime());
                     }
                 }
                 SimpleDateFormat simpleDateformat = new SimpleDateFormat("EEEE");
-                openHour.setDayOfWeek(simpleDateformat.format(openHour.getFromTime()));
+                openHour.setDayOfWeek(simpleDateformat.format(openHour.getDate()));
                 openHoursRepository.save(openHour);
                 existingOpenHours.add(openHour);
             });
@@ -72,11 +87,11 @@ public class OpenHoursServiceImpl implements OpenHoursService{
     public void updateDay(String id, OpenHours openHour) {
         List<OpenHours> existingOpenHours = openHoursRepository.findAll();
         Date currentDate = new Date();
-        if(openHour.getFromTime().before(currentDate)){
+        if(openHour.getDate().before(currentDate)){
             throw new InvalidInputException("Please select a date after current date");
         }
         for (OpenHours openHrs : existingOpenHours) {
-            if (openHour.getFromTime().equals(openHrs.getFromTime())) {
+            if (openHour.getDate().equals(openHrs.getDate())) {
                 throw new InvalidInputException("Can't create a new open Hour due to existing open hour with id: " + openHrs.getId() + " on day " + openHrs.getToTime());
             }
         }
@@ -86,9 +101,10 @@ public class OpenHoursServiceImpl implements OpenHoursService{
         }
         openHr.ifPresent(openHours -> {
             SimpleDateFormat simpleDateformat = new SimpleDateFormat("EEEE");
-            openHours.setDayOfWeek(simpleDateformat.format(openHour.getFromTime()));
+            openHours.setDayOfWeek(simpleDateformat.format(openHour.getDate()));
             openHours.setFromTime(openHour.getFromTime());
             openHours.setToTime(openHour.getToTime());
+            openHours.setDate(openHour.getDate());
             openHoursRepository.save(openHours);
         });
 

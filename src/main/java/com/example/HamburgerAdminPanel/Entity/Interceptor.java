@@ -20,6 +20,6 @@ public class Interceptor {
     private String apiName;
     @Column(name = "executionTime")
     private long executionTime;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd", timezone = "EST")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yy", timezone = "EST")
     private Date date;
 }

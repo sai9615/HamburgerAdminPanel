@@ -12,7 +12,7 @@ import java.util.Date;
 public class Reservation {
     @Id
     private String reservationId;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd HH:mm", timezone = "EST")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yy HH:mm", timezone = "EST")
     private Date day;
     private String firstName;
     private String lastName;

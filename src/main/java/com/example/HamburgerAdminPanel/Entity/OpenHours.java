@@ -12,9 +12,11 @@ import java.util.Date;
 public class OpenHours {
     @Id
     private String id;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd HH:mm", timezone = "EST")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "EST")
     private Date fromTime;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd HH:mm", timezone = "EST")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "EST")
     private Date toTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yy", timezone = "EST")
+    private Date date;
     private String dayOfWeek;
 }
