@@ -14,6 +14,8 @@ public class ApiType {
             interceptor.setApiName("reservations");
         } else if (url.contains("interceptors")) {
             interceptor.setApiName("interceptors");
+        }else if (url.contains("my-users")) {
+            interceptor.setApiName("my-users");
         }
         return interceptor;
     }

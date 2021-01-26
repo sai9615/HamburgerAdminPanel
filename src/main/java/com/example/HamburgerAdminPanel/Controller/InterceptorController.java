@@ -16,7 +16,7 @@ public class InterceptorController {
     @Autowired
     InterceptorServiceImpl interceptorService;
 
-    @GetMapping("/interceptors")
+    @GetMapping("/user/interceptors")
     public ResponseEntity<?> findAllInterceptions(@RequestParam(defaultValue = "0") int page,
                                                   @RequestParam(defaultValue = "5") int size){
     try{
@@ -26,7 +26,7 @@ public class InterceptorController {
         }
     }
 
-    @GetMapping("/interceptors/{id}")
+    @GetMapping("/user/interceptors/{id}")
     public ResponseEntity<?> findInterceptionById(@PathVariable("id") long id){
         try{
             return new ResponseEntity<>(interceptorService.getInterceptionById(id), HttpStatus.OK);
@@ -35,7 +35,7 @@ public class InterceptorController {
         }
     }
 
-    @GetMapping("/interceptors/api")
+    @GetMapping("/user/interceptors/api")
     public ResponseEntity<?> findByApiName(@RequestParam String apiName, @RequestParam(defaultValue = "0") int page,
                                            @RequestParam(defaultValue = "3") int size){
         try{
@@ -45,7 +45,7 @@ public class InterceptorController {
         }
     }
 
-    @GetMapping("/interceptors/date")
+    @GetMapping("/user/interceptors/date")
     public ResponseEntity<?> findByDate(@RequestParam Date date, @RequestParam(defaultValue = "0") int page,
                                         @RequestParam(defaultValue = "3") int size){
         try{
@@ -55,13 +55,13 @@ public class InterceptorController {
         }
     }
 
-    @PostMapping("/interceptors")
+    @PostMapping("/admin/interceptors")
     public ResponseEntity<?> saveInterceptorTime(@RequestBody Interceptor interceptor){
         interceptorService.saveInterception(interceptor);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/interceptors/{id}")
+    @DeleteMapping("/admin/interceptors/{id}")
     public ResponseEntity<?> deleteInterceptor(@PathVariable("id") long id){
         try {
             interceptorService.deleteInterceptionById(id);
@@ -71,7 +71,7 @@ public class InterceptorController {
         }
     }
 
-    @DeleteMapping("/interceptors/api")
+    @DeleteMapping("/admin/interceptors/api")
     public ResponseEntity<?> deleteByApiName(@RequestParam String apiName){
         try {
             interceptorService.deleteByApiName(apiName);
@@ -81,7 +81,7 @@ public class InterceptorController {
         }
     }
 
-    @DeleteMapping("/interceptors")
+    @DeleteMapping("/admin/interceptors")
     public ResponseEntity<?> deleteAllData(){
         try {
             interceptorService.deleteAll();

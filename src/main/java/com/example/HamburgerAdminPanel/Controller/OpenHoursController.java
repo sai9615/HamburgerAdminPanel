@@ -17,7 +17,7 @@ public class OpenHoursController {
     @Autowired
     OpenHoursServiceImpl openHoursService;
 
-    @GetMapping(value = "/open-hours")
+    @GetMapping(value = "/user/open-hours")
     public ResponseEntity<?> findAllOpenHours(@RequestParam(defaultValue = "0") int page,
                                               @RequestParam(defaultValue = "3") int size){
         try {
@@ -27,7 +27,7 @@ public class OpenHoursController {
         }
     }
 
-    @GetMapping(value = "/open-hours/day-of-week")
+    @GetMapping(value = "/user/open-hours/day-of-week")
     public ResponseEntity<?> findByDayOfWeek(@RequestParam String day, @RequestParam(defaultValue = "0") int page,
                                              @RequestParam(defaultValue = "3") int size){
         try {
@@ -37,7 +37,7 @@ public class OpenHoursController {
         }
     }
 
-    @GetMapping(value = "/open-hours/{id}")
+    @GetMapping(value = "/user/open-hours/{id}")
     public ResponseEntity<?> findByOpenHourId(@PathVariable("id") String id){
         try {
             return new ResponseEntity<>(openHoursService.findById(id), HttpStatus.OK);
@@ -46,7 +46,7 @@ public class OpenHoursController {
         }
     }
 
-    @GetMapping(value = "/open-hours/dates")
+    @GetMapping(value = "/user/open-hours/dates")
     public ResponseEntity<?> findByDate(@RequestParam String date){
         try {
             return new ResponseEntity<>(openHoursService.findByDate(date), HttpStatus.OK);
@@ -55,7 +55,7 @@ public class OpenHoursController {
         }
     }
 
-    @PostMapping(value = "/open-hours")
+    @PostMapping(value = "/admin/open-hours")
     public ResponseEntity<?> addOpenHours(@RequestBody List<OpenHours> openHours){
         try {
             openHoursService.postNewDays(openHours);
@@ -65,7 +65,7 @@ public class OpenHoursController {
         }
     }
 
-    @PutMapping(value = "/open-hours/{id}")
+    @PutMapping(value = "/admin/open-hours/{id}")
     public ResponseEntity<?> addOpenHours(@PathVariable("id") String id, @RequestBody OpenHours openHours){
         try {
             openHoursService.updateDay(id, openHours);
@@ -75,7 +75,7 @@ public class OpenHoursController {
         }
     }
 
-    @DeleteMapping(value = "/open-hours")
+    @DeleteMapping(value = "/admin/open-hours")
     public ResponseEntity<?> deleteAllHours(){
         try {
             openHoursService.deleteAllDays();
@@ -85,7 +85,7 @@ public class OpenHoursController {
         }
     }
 
-    @DeleteMapping(value="/open-hours/{id}")
+    @DeleteMapping(value="/admin/open-hours/{id}")
     public ResponseEntity<?> deleteOpenHoursById(@PathVariable("id") String id){
         try {
             openHoursService.deleteADay(id);

@@ -99,7 +99,7 @@ public class LocationServiceImpl implements LocationService{
         Pageable paging =  PageRequest.of(page,size);
         List<Location> locations = locationRepository.findByStatus(status, paging);
         if(locations.isEmpty()){
-            throw new ResourceNotFoundException("Locations with status doesn't exist");
+            throw new ResourceNotFoundException("Locations with status: "+status+" doesn't exist");
         } else {
             return locations;
         }

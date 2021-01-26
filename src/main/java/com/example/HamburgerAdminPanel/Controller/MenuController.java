@@ -18,7 +18,7 @@ public class MenuController {
     @Autowired
     MenuServiceImpl menuService;
 
-    @GetMapping(value = "/menus")
+    @GetMapping(value = "/user/menus")
     public ResponseEntity<?> findAllMenuItems(@RequestParam(defaultValue = "0") int page,
                                               @RequestParam(defaultValue = "3") int size){
         try {
@@ -29,7 +29,7 @@ public class MenuController {
         }
     }
 
-    @GetMapping(value = "/menus/{itemId}")
+    @GetMapping(value = "/user/menus/{itemId}")
     public ResponseEntity<?> findByItemId(@PathVariable("itemId") String id){
         try {
             return new ResponseEntity<>(menuService.findByItemId(id), HttpStatus.OK);
@@ -38,7 +38,7 @@ public class MenuController {
         }
     }
 
-    @GetMapping(value = "/menus/categories")
+    @GetMapping(value = "/user/menus/categories")
     public ResponseEntity<?> findByCategory(@RequestParam String type, @RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "3") int size){
         try{
@@ -48,7 +48,7 @@ public class MenuController {
         }
     }
 
-    @GetMapping(value = "/menus/menu-items")
+    @GetMapping(value = "/user/menus/menu-items")
     public ResponseEntity<?> findByMenuItem(@RequestParam String name){
        try{
            return new ResponseEntity<>(menuService.findByMenuItem(name), HttpStatus.OK);
@@ -57,7 +57,7 @@ public class MenuController {
        }
     }
 
-    @GetMapping(value = "/menus/filter-by-status")
+    @GetMapping(value = "/user/menus/filter-by-status")
     public ResponseEntity<?> filterByStatus(@RequestParam String status, @RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "3") int size){
         try{
@@ -67,7 +67,7 @@ public class MenuController {
         }
     }
 
-    @GetMapping(value = "/menus/filter-by-menutype-category")
+    @GetMapping(value = "/user/menus/filter-by-menutype-category")
     public ResponseEntity<?> filterByCategoryAndMenuType(@RequestParam String menuType, @RequestParam String category, @RequestParam(defaultValue = "0") int page,
                                                          @RequestParam(defaultValue = "3") int size){
         try{
@@ -76,7 +76,8 @@ public class MenuController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
-    @PostMapping(value = "/menus")
+
+    @PostMapping(value = "/admin/menus")
     public ResponseEntity<?> createMenuItem(@RequestBody List<Menu> menu){
         try {
             menuService.saveAllMenuItems(menu);
@@ -86,7 +87,7 @@ public class MenuController {
         }
     }
 
-    @PutMapping(value = "/menus/menu-item/{id}")
+    @PutMapping(value = "/admin/menus/menu-item/{id}")
     public ResponseEntity<?> updateMenuItem(@PathVariable("id") String
                                                 id, @RequestBody Menu menu){
         try {
@@ -97,7 +98,7 @@ public class MenuController {
         }
     }
 
-    @DeleteMapping(value="/menus/{id}")
+    @DeleteMapping(value="/admin/menus/{id}")
     public ResponseEntity<?> deleteMenuItem(@PathVariable("id") String id){
         try {
             menuService.deleteMenuItem(id);
@@ -107,7 +108,7 @@ public class MenuController {
         }
     }
 
-    @DeleteMapping(value = "/menus")
+    @DeleteMapping(value = "/admin/menus")
     public ResponseEntity<?> deleteAllMenuItems(){
         try {
             menuService.deleteAll();

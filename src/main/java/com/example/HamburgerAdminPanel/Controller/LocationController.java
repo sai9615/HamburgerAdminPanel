@@ -5,6 +5,7 @@ import com.example.HamburgerAdminPanel.Service.LocationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -17,7 +18,7 @@ public class LocationController {
     @Autowired
     LocationServiceImpl locationService;
 
-    @GetMapping(value = "/locations/{id}")
+    @GetMapping(value = "/user/locations/{id}")
     public ResponseEntity<?> findByLocationId(@PathVariable("id") String locationId) {
         try{
             return new ResponseEntity<>(locationService.findByLocationsId(locationId), HttpStatus.OK);
@@ -26,7 +27,7 @@ public class LocationController {
         }
     }
 
-    @GetMapping(value = "/locations")
+    @GetMapping(value = "/user/locations")
     public ResponseEntity<?>  findAllLocations(@RequestParam(defaultValue = "0") int page,
                                                @RequestParam(defaultValue = "3") int size) {
         try {
@@ -37,7 +38,7 @@ public class LocationController {
         }
     }
 
-    @GetMapping(value = "/locations/search-nearest-location")
+    @GetMapping(value = "/user/locations/search-nearest-location")
     public ResponseEntity<?> searchNearByLocation(@RequestParam(required = true) String longitude, @RequestParam(required = true) String latitude){
         try{
             return new ResponseEntity<>(locationService.findNearByLocation(longitude, latitude), HttpStatus.OK);
@@ -46,7 +47,7 @@ public class LocationController {
         }
     }
 
-    @GetMapping(value = "locations/filter-by-status")
+    @GetMapping(value = "/user/locations/filter-by-status")
     public ResponseEntity<?> searchByStatus(@RequestParam(required = true) String status, @RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "3") int size){
         try{
@@ -56,7 +57,7 @@ public class LocationController {
         }
     }
 
-    @PostMapping(value = "/locations")
+    @PostMapping(value = "/admin/locations")
     public ResponseEntity<?> saveLocations(@RequestBody List<Location> location) {
         try {
             locationService.saveLocations(location);
@@ -66,7 +67,7 @@ public class LocationController {
         }
     }
 
-    @PutMapping(value = "/locations/{id}")
+    @PutMapping(value = "/admin/locations/{id}")
     public ResponseEntity<?> updateLocation(@PathVariable("id") String id, @RequestBody Location location){
         try{
             locationService.updateLocation(id, location);
@@ -77,7 +78,7 @@ public class LocationController {
 
     }
 
-    @DeleteMapping(value = "/locations/{id}")
+    @DeleteMapping(value = "/admin/locations/{id}")
     public ResponseEntity<?> deleteLocationById(@PathVariable("id") String id){
         try {
             locationService.deleteById(id);
@@ -88,7 +89,7 @@ public class LocationController {
 
     }
 
-    @DeleteMapping(value = "/locations")
+    @DeleteMapping(value = "/admin/locations")
     public ResponseEntity<?> deleteAllLocations(){
         try {
             locationService.deleteAll();

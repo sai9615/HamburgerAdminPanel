@@ -18,7 +18,7 @@ public class ReservationController {
     @Autowired
     ReservationServiceImpl reservationService;
 
-    @GetMapping("/reservations")
+    @GetMapping("/user/reservations")
     public ResponseEntity<?> getAllReservations(@RequestParam(defaultValue = "0") int page,
                                                 @RequestParam(defaultValue = "3") int size){
         try{
@@ -28,7 +28,7 @@ public class ReservationController {
         }
     }
 
-    @GetMapping("/reservations/{id}")
+    @GetMapping("/user/reservations/{id}")
     public ResponseEntity<?> getReservationById(@PathVariable("id") String id ){
         try{
             return new ResponseEntity<>(reservationService.findByReservationId(id), HttpStatus.OK);
@@ -37,7 +37,7 @@ public class ReservationController {
         }
     }
 
-    @GetMapping("/reservations/getByName")
+    @GetMapping("/user/reservations/getByName")
     public ResponseEntity<?> getReservationByFirstName(@RequestParam(required = false) String firstName, @RequestParam(required = false) String lastName){
         try{
             if(firstName!= null){
@@ -50,7 +50,7 @@ public class ReservationController {
         }
     }
 
-    @PostMapping("/reservations")
+    @PostMapping("/admin/reservations")
     public  ResponseEntity<?> saveAllReservations(@RequestBody List<Reservation> reservations){
         try{
             reservationService.createReservation(reservations);
@@ -60,7 +60,7 @@ public class ReservationController {
         }
     }
 
-    @PutMapping("/reservations/{id}")
+    @PutMapping("/admin/reservations/{id}")
     public  ResponseEntity<?> updateReservation(@PathVariable("id") String id, @RequestBody Reservation reservation) {
         try{
             reservationService.updateReservation(id, reservation);
@@ -70,7 +70,7 @@ public class ReservationController {
         }
     }
 
-    @DeleteMapping("reservations/{id}")
+    @DeleteMapping("/admin/reservations/{id}")
     public ResponseEntity<?> deleteReservationById(@PathVariable("id") String id){
         try{
             reservationService.deleteReservation(id);
@@ -80,7 +80,7 @@ public class ReservationController {
         }
     }
 
-    @DeleteMapping("reservations")
+    @DeleteMapping("/admin/reservations")
     public ResponseEntity<?> deleteAllReservations(){
         try{
             reservationService.deleteAllReservations();

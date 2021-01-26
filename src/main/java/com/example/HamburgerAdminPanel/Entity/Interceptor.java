@@ -8,6 +8,7 @@ import java.util.Date;
 
 @Entity
 @Data
+@Table(name = "Interceptor")
 public class Interceptor {
 
     @Id
@@ -22,4 +23,5 @@ public class Interceptor {
     private long executionTime;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yy", timezone = "EST")
     private Date date;
+
 }
