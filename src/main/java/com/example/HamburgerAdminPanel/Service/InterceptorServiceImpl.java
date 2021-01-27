@@ -17,6 +17,7 @@ import java.util.Optional;
 @Service
 @Transactional
 public class InterceptorServiceImpl implements InterceptorService{
+
     @Autowired
     InterceptorRepository interceptorRepository;
 

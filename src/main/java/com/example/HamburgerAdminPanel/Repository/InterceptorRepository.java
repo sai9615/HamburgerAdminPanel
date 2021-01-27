@@ -2,7 +2,7 @@ package com.example.HamburgerAdminPanel.Repository;
 
 import com.example.HamburgerAdminPanel.Entity.Interceptor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface InterceptorRepository extends PagingAndSortingRepository<Interceptor, String> {
+public interface InterceptorRepository extends JpaRepository<Interceptor, String> {
     Optional<List<Interceptor>> findByApiName(String apiName, Pageable pageable);
     Optional<Interceptor> findByInterceptionId(long id);
     Optional<List<Interceptor>> findAllByDate(Date date, Pageable pageable);
