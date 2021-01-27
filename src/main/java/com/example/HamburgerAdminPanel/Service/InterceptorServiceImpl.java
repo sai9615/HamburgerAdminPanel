@@ -1,6 +1,7 @@
 package com.example.HamburgerAdminPanel.Service;
 
 import com.example.HamburgerAdminPanel.Entity.Interceptor;
+import com.example.HamburgerAdminPanel.Exception.InvalidInputException;
 import com.example.HamburgerAdminPanel.Exception.ResourceNotFoundException;
 import com.example.HamburgerAdminPanel.Repository.InterceptorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +42,7 @@ public class InterceptorServiceImpl implements InterceptorService{
     @Override
     public Iterable<Interceptor> findByApiName(String apiName, int page, int size) {
         Pageable paging = PageRequest.of(page, size);
-        Optional<List<Interceptor>> interceptor = interceptorRepository.findByApiName(apiName, paging);
+        Optional<List<Interceptor>> interceptor = interceptorRepository.findByApiNameIgnoreCase(apiName, paging);
         if(interceptor.isEmpty()){
             throw new ResourceNotFoundException("Interception with api name: "+apiName+" doesn't exist in database");
         }
@@ -48,11 +50,16 @@ public class InterceptorServiceImpl implements InterceptorService{
     }
 
     @Override
-    public List<Interceptor> findAllByGivenDate(Date date, int page, int size) {
+    public List<Interceptor> findAllByGivenDate(String date, int page, int size) {
         Pageable paging = PageRequest.of(page, size);
-        Optional<List<Interceptor>> interceptor = interceptorRepository.findAllByDate(date, paging);
-        if(interceptor.isEmpty()){
-            throw new ResourceNotFoundException("Interception on date: "+date.toString()+" doesn't exist in database");
+        Optional<List<Interceptor>> interceptor;
+        try {
+            interceptor = interceptorRepository.findByDate(new SimpleDateFormat("dd-MM-yy").parse(date), paging);
+        } catch (ParseException e) {
+            throw new InvalidInputException("Invalid date");
+        }
+        if (interceptor.isEmpty()) {
+            throw new ResourceNotFoundException("Interception on date: " + date.toString() + " doesn't exist in database");
         }
         return interceptor.get();
     }
@@ -74,7 +81,7 @@ public class InterceptorServiceImpl implements InterceptorService{
     @Override
     public void deleteByApiName(String apiName) {
         try {
-            interceptorRepository.deleteByApiName(apiName);
+            interceptorRepository.deleteByApiNameIgnoreCase(apiName);
         } catch (Exception e){
             throw new ResourceNotFoundException("API: "+apiName+" not found");
         }

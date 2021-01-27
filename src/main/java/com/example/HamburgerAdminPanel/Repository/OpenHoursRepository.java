@@ -12,6 +12,6 @@ import java.util.Optional;
 @Repository
 public interface OpenHoursRepository extends MongoRepository <OpenHours,String> {
     Optional<OpenHours> findById(String id);
-    Optional<List<OpenHours>> findByDayOfWeek(String dayOfWeek, Pageable pageable);
+    Optional<List<OpenHours>> findByDayOfWeekIgnoreCase(String dayOfWeek, Pageable pageable);
     Optional<OpenHours> findByDate(Date date);
 }

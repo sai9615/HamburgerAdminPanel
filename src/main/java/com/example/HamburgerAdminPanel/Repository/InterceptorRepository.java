@@ -11,9 +11,9 @@ import java.util.Optional;
 
 @Repository
 public interface InterceptorRepository extends JpaRepository<Interceptor, String> {
-    Optional<List<Interceptor>> findByApiName(String apiName, Pageable pageable);
+    Optional<List<Interceptor>> findByApiNameIgnoreCase(String apiName, Pageable pageable);
     Optional<Interceptor> findByInterceptionId(long id);
-    Optional<List<Interceptor>> findAllByDate(Date date, Pageable pageable);
-    void deleteByApiName(String apiName);
+    Optional<List<Interceptor>> findByDate(Date date, Pageable pageable);
+    void deleteByApiNameIgnoreCase(String apiName);
     void deleteByInterceptionId(long id);
 }

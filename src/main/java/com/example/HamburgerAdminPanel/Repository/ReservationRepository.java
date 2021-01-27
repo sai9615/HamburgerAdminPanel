@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface ReservationRepository extends MongoRepository<Reservation, String> {
 
-    Optional<Reservation> findByFirstName(String firstName);
-    Optional<Reservation> findByLastName(String lastName);
+    Optional<Reservation> findByFirstNameIgnoreCase(String firstName);
+    Optional<Reservation> findByLastNameIgnoreCase(String lastName);
     Optional<Reservation> findByReservationId(String id);
 }

@@ -11,6 +11,7 @@ public interface MenuService {
     List<Menu> findAllMenuItems(int page, int size);
     List<Menu> findByMenuTypeAndCategory(String type, String category, int page, int size);
     Menu findByMenuItem(String itemName);
+    List<Menu> findByMenuType(String menuType, int page, int size);
     List<Menu> filterByStatus(Boolean status, int page, int size);
     void saveAllMenuItems(List<Menu> menu);
     void updateMenuItem(String menuId, Menu updatedMenu);

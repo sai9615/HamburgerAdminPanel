@@ -25,7 +25,7 @@ public class OpenHoursServiceImpl implements OpenHoursService{
     @Override
     public List<OpenHours> findByDayOfWeek(String dayOfWeek, int page, int size) {
         Pageable paging =  PageRequest.of(page,size);
-        Optional<List<OpenHours>> openHours = openHoursRepository.findByDayOfWeek(dayOfWeek, paging);
+        Optional<List<OpenHours>> openHours = openHoursRepository.findByDayOfWeekIgnoreCase(dayOfWeek, paging);
         if (openHours.isEmpty()) {
             throw new ResourceNotFoundException("No such day found");
         } else {

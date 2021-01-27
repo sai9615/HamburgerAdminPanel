@@ -11,8 +11,9 @@ import java.util.Optional;
 @Repository
 public interface MenuRepository extends MongoRepository<Menu, String> {
     Optional<Menu> findByItemId(String itemId);
-    Optional<List<Menu>> findByCategory(String category, Pageable pageable);
-    Optional<Menu> findByItemName(String menuItem);
+    Optional<List<Menu>> findByCategoryIgnoreCase(String category, Pageable pageable);
+    Optional<List<Menu>> findByMenuTypeIgnoreCase(String type, Pageable pageable);
+    Optional<Menu> findByItemNameIgnoreCase(String menuItem);
     Optional<List<Menu>> findByStatus(Boolean status, Pageable pageable);
-    Optional<List<Menu>> findByMenuTypeAndCategory(String type, String category, Pageable pageable);
+    Optional<List<Menu>> findByMenuTypeAndCategoryIgnoreCase(String type, String category, Pageable pageable);
 }

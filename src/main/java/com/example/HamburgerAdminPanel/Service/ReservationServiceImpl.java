@@ -27,7 +27,7 @@ public class ReservationServiceImpl implements ReservationService {
      */
     @Override
     public Reservation findByFirstName(String firstName) {
-        Optional<Reservation> reservation = reservationRepository.findByFirstName(firstName);
+        Optional<Reservation> reservation = reservationRepository.findByFirstNameIgnoreCase(firstName);
         if (reservation.isPresent()) {
             return reservation.get();
         } else {
@@ -41,7 +41,7 @@ public class ReservationServiceImpl implements ReservationService {
      */
     @Override
     public Reservation findByLastName(String lastName) {
-        Optional<Reservation> reservation = reservationRepository.findByLastName(lastName);
+        Optional<Reservation> reservation = reservationRepository.findByLastNameIgnoreCase(lastName);
         if (reservation.isPresent()) {
             return reservation.get();
         } else {

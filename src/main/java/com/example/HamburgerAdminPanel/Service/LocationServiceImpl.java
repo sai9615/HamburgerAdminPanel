@@ -75,6 +75,11 @@ public class LocationServiceImpl implements LocationService{
         locationRepository.deleteById(id);
     }
 
+    /**
+     * @param longitude
+     * @param latitude
+     * @return nearest location
+     */
     @Override
     public Location findNearByLocation(String longitude, String latitude) {
         List<Location> locations = locationRepository.findAll();
@@ -89,22 +94,18 @@ public class LocationServiceImpl implements LocationService{
         int minIndex = distance.indexOf(Collections.min(distance));
         Location location = locations.get(minIndex);
         if(Boolean.FALSE.equals(location.getStatus())){
-            throw new ResourceNotFoundException("No near by locations");
+            throw new ResourceNotFoundException("Near by location is in active");
         }
         return location;
     }
 
-    @Override
-    public List<Location> filterByStatus(Boolean status, int page, int size) {
-        Pageable paging =  PageRequest.of(page,size);
-        List<Location> locations = locationRepository.findByStatus(status, paging);
-        if(locations.isEmpty()){
-            throw new ResourceNotFoundException("Locations with status: "+status+" doesn't exist");
-        } else {
-            return locations;
-        }
-    }
-
+    /**
+     * @param lat1
+     * @param lon1
+     * @param lat2
+     * @param lon2
+     * @return distance between two locations given their coordinates
+     */
     private double distance(double lat1, double lon1, double lat2, double lon2) {
         double theta = lon1 - lon2;
         double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2))
@@ -121,6 +122,23 @@ public class LocationServiceImpl implements LocationService{
     }
     private double rad2deg(double rad) {
         return (rad * 180.0 / Math.PI);
+    }
+
+    /**
+     * @param status
+     * @param page
+     * @param size
+     * @return list of locations filtered by their status
+     */
+    @Override
+    public List<Location> filterByStatus(Boolean status, int page, int size) {
+        Pageable paging =  PageRequest.of(page,size);
+        List<Location> locations = locationRepository.findByStatus(status, paging);
+        if(locations.isEmpty()){
+            throw new ResourceNotFoundException("Locations with status: "+status+" doesn't exist");
+        } else {
+            return locations;
+        }
     }
 
     /**
