@@ -3,6 +3,7 @@ package com.example.HamburgerAdminPanel.Service;
 import com.example.HamburgerAdminPanel.Entity.Location;
 import com.example.HamburgerAdminPanel.Exception.ResourceNotFoundException;
 import com.example.HamburgerAdminPanel.Repository.LocationRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
+@Slf4j
 public class LocationServiceImpl implements LocationService{
 
     @Autowired
@@ -27,10 +29,12 @@ public class LocationServiceImpl implements LocationService{
         if(optional.isPresent()){
            Location location =  optional.get();
            if(Boolean.FALSE.equals(location.getStatus())){
+               log.debug(" Location is in-active, please set the status to active to get location details");
                throw new ResourceNotFoundException("Location is in-active, please set the status to active to get location details");
            }
            return location;
         } else {
+            log.debug(" location with "+ id+" not found");
             throw new ResourceNotFoundException("Location with id not found");
         }
     }
@@ -43,6 +47,7 @@ public class LocationServiceImpl implements LocationService{
     public void updateLocation(String id, Location loc) {
         Optional<Location> optional  = locationRepository.findByLocationId(id);
         if(optional.isEmpty()){
+            log.debug(" Location with id "+id+" doesn't exist");
             throw new ResourceNotFoundException("Location with id "+id+" doesn't exist");
         }
         optional.ifPresent(location -> {
@@ -70,6 +75,7 @@ public class LocationServiceImpl implements LocationService{
     public void deleteById(String id) {
         Optional<Location> optional  = locationRepository.findByLocationId(id);
         if(optional.isEmpty()){
+            log.debug(" Location with id "+id+" doesn't exist");
             throw new ResourceNotFoundException("Location with id "+id+" doesn't exist");
         }
         locationRepository.deleteById(id);
@@ -84,6 +90,7 @@ public class LocationServiceImpl implements LocationService{
     public Location findNearByLocation(String longitude, String latitude) {
         List<Location> locations = locationRepository.findAll();
         if(locations.isEmpty()){
+            log.debug(" No locations in Database to filter by");
             throw new ResourceNotFoundException("No locations in Database to filter by");
         }
         ArrayList<Double> distance  = new ArrayList<>();
@@ -94,6 +101,7 @@ public class LocationServiceImpl implements LocationService{
         int minIndex = distance.indexOf(Collections.min(distance));
         Location location = locations.get(minIndex);
         if(Boolean.FALSE.equals(location.getStatus())){
+            log.debug(" Near by location is in active");
             throw new ResourceNotFoundException("Near by location is in active");
         }
         return location;
@@ -135,6 +143,7 @@ public class LocationServiceImpl implements LocationService{
         Pageable paging =  PageRequest.of(page,size);
         List<Location> locations = locationRepository.findByStatus(status, paging);
         if(locations.isEmpty()){
+            log.debug("Locations with status: "+status+" doesn't exist ");
             throw new ResourceNotFoundException("Locations with status: "+status+" doesn't exist");
         } else {
             return locations;

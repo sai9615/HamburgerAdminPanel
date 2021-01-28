@@ -4,6 +4,7 @@ import com.example.HamburgerAdminPanel.Entity.Interceptor;
 import com.example.HamburgerAdminPanel.Exception.InvalidInputException;
 import com.example.HamburgerAdminPanel.Exception.ResourceNotFoundException;
 import com.example.HamburgerAdminPanel.Repository.InterceptorRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@Slf4j
 public class InterceptorServiceImpl implements InterceptorService{
 
     @Autowired
@@ -27,6 +29,7 @@ public class InterceptorServiceImpl implements InterceptorService{
     public Interceptor getInterceptionById(long id) {
         Optional<Interceptor> interceptor = interceptorRepository.findByInterceptionId(id);
         if(interceptor.isEmpty()){
+            log.debug(this.getClass().getName()+": "+ this.getClass().getEnclosingMethod().getName()+" Interception with Id doesn't exist in database");
             throw new ResourceNotFoundException("Interception with Id doesn't exist in database");
         }
         return interceptor.get();
@@ -44,6 +47,7 @@ public class InterceptorServiceImpl implements InterceptorService{
         Pageable paging = PageRequest.of(page, size);
         Optional<List<Interceptor>> interceptor = interceptorRepository.findByApiNameIgnoreCase(apiName, paging);
         if(interceptor.isEmpty()){
+            log.debug(this.getClass().getName()+": "+  this.getClass().getEnclosingMethod().getName()+" Interception with api name: "+apiName+" doesn't exist in database");
             throw new ResourceNotFoundException("Interception with api name: "+apiName+" doesn't exist in database");
         }
         return interceptor.get();
@@ -56,6 +60,7 @@ public class InterceptorServiceImpl implements InterceptorService{
         try {
             interceptor = interceptorRepository.findByDate(new SimpleDateFormat("dd-MM-yy").parse(date), paging);
         } catch (ParseException e) {
+            log.debug(this.getClass().getName()+": "+ this.getClass().getEnclosingMethod().getName()+" Invalid date provided");
             throw new InvalidInputException("Invalid date");
         }
         if (interceptor.isEmpty()) {
@@ -67,6 +72,7 @@ public class InterceptorServiceImpl implements InterceptorService{
     @Override
     public void saveInterception(Interceptor interceptor) {
             interceptorRepository.save(interceptor);
+            log.info(this.getClass().getName()+": "+ this.getClass().getEnclosingMethod().getName()+" saved interceptor data to database");
     }
 
     @Override
@@ -74,6 +80,7 @@ public class InterceptorServiceImpl implements InterceptorService{
         try {
             interceptorRepository.deleteByInterceptionId(id);
         } catch (Exception e){
+            log.debug(this.getClass().getName()+": "+ this.getClass().getEnclosingMethod().getName()+" Id: "+id+" not found");
             throw new ResourceNotFoundException("Id: "+id+" not found");
         }
     }
@@ -83,6 +90,7 @@ public class InterceptorServiceImpl implements InterceptorService{
         try {
             interceptorRepository.deleteByApiNameIgnoreCase(apiName);
         } catch (Exception e){
+            log.debug(this.getClass().getName()+": "+ this.getClass().getEnclosingMethod().getName()+" API: "+apiName+" not found");
             throw new ResourceNotFoundException("API: "+apiName+" not found");
         }
     }
@@ -90,6 +98,7 @@ public class InterceptorServiceImpl implements InterceptorService{
     @Override
     public void deleteAll() {
         interceptorRepository.deleteAll();
+        log.debug(this.getClass().getName()+": "+ this.getClass().getEnclosingMethod().getName()+" Deleted all the data");
     }
 
 }

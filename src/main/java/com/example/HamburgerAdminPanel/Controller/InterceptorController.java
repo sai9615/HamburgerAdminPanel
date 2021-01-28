@@ -13,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.Date;
-
 @RestController
 @RequestMapping(value = "/api")
 @EnableSwagger2

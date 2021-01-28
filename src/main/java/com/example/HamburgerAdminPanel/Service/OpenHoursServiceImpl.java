@@ -4,6 +4,7 @@ import com.example.HamburgerAdminPanel.Entity.OpenHours;
 import com.example.HamburgerAdminPanel.Exception.InvalidInputException;
 import com.example.HamburgerAdminPanel.Exception.ResourceNotFoundException;
 import com.example.HamburgerAdminPanel.Repository.OpenHoursRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class OpenHoursServiceImpl implements OpenHoursService{
 
     @Autowired
@@ -27,6 +29,7 @@ public class OpenHoursServiceImpl implements OpenHoursService{
         Pageable paging =  PageRequest.of(page,size);
         Optional<List<OpenHours>> openHours = openHoursRepository.findByDayOfWeekIgnoreCase(dayOfWeek, paging);
         if (openHours.isEmpty()) {
+            log.debug(" No such day found");
             throw new ResourceNotFoundException("No such day found");
         } else {
             return openHours.get();
@@ -36,6 +39,7 @@ public class OpenHoursServiceImpl implements OpenHoursService{
     public OpenHours findById(String id){
         Optional<OpenHours> openHours = openHoursRepository.findById(id);
         if (openHours.isEmpty()) {
+            log.debug(" No such id: "+id+" exist");
             throw new ResourceNotFoundException("No such id: "+id+" exist");
         } else {
             return openHours.get();
@@ -55,9 +59,11 @@ public class OpenHoursServiceImpl implements OpenHoursService{
         try {
             openHours = openHoursRepository.findByDate(new SimpleDateFormat("dd-MM-yyyy").parse(date));
         } catch (ParseException e) {
+            log.debug(" Invalid date");
             throw new InvalidInputException("Invalid date");
         }
         if(openHours.isEmpty()){
+            log.debug(" No open hours on date: "+date+ " exist");
             throw new ResourceNotFoundException("No open hours on date: "+date+ " exist");
         }
         return openHours.get();
@@ -69,10 +75,12 @@ public class OpenHoursServiceImpl implements OpenHoursService{
         Date currentDate = new Date();
         openHours.forEach(openHour -> {
                 if (openHour.getDate().before(currentDate)) {
+                    log.debug(" Please select a date after current date for id: " +openHour.getId());
                     throw new InvalidInputException("Please select a date after current date for id: " +openHour.getId());
                 }
                 for (OpenHours openHrs : existingOpenHours) {
                     if (openHour.getDate().equals(openHrs.getDate())) {
+                        log.debug(" Can't create a new open Hour due to existing open hour with id: " + openHrs.getId() + " on day " + openHrs.getToTime());
                         throw new InvalidInputException("Can't create a new open Hour due to existing open hour with id: " + openHrs.getId() + " on day " + openHrs.getToTime());
                     }
                 }
@@ -88,15 +96,18 @@ public class OpenHoursServiceImpl implements OpenHoursService{
         List<OpenHours> existingOpenHours = openHoursRepository.findAll();
         Date currentDate = new Date();
         if(openHour.getDate().before(currentDate)){
+            log.debug( " Please select a date after current date");
             throw new InvalidInputException("Please select a date after current date");
         }
         for (OpenHours openHrs : existingOpenHours) {
             if (openHour.getDate().equals(openHrs.getDate())) {
+                log.debug( " Can't create a new open Hour due to existing open hour with id: " + openHrs.getId() + " on day " + openHrs.getToTime());
                 throw new InvalidInputException("Can't create a new open Hour due to existing open hour with id: " + openHrs.getId() + " on day " + openHrs.getToTime());
             }
         }
         Optional<OpenHours> openHr = openHoursRepository.findById(id);
         if(openHr.isEmpty()){
+            log.debug( " No such id:" + id +" exist");
             throw new ResourceNotFoundException("No such id:" + id +" exist");
         }
         openHr.ifPresent(openHours -> {
@@ -120,6 +131,7 @@ public class OpenHoursServiceImpl implements OpenHoursService{
         try{
             openHoursRepository.deleteById(id);
         } catch (Exception e){
+            log.debug(" id: "+id+ " not found");
             throw  new ResourceNotFoundException("id: "+id+ " not found");
         }
     }

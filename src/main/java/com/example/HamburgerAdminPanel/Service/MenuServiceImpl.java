@@ -4,6 +4,7 @@ import com.example.HamburgerAdminPanel.Entity.Menu;
 import com.example.HamburgerAdminPanel.Exception.InvalidInputException;
 import com.example.HamburgerAdminPanel.Exception.ResourceNotFoundException;
 import com.example.HamburgerAdminPanel.Repository.MenuRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class MenuServiceImpl implements MenuService {
 
     @Autowired
@@ -28,11 +30,13 @@ public class MenuServiceImpl implements MenuService {
     public Menu findByItemId(String id) {
         Optional<Menu> menu = menuRepository.findByItemId(id);
         if (menu.isEmpty()) {
+            log.debug(" Menu item with id " + id + " not found");
             throw new ResourceNotFoundException("Menu item with id " + id + " not found");
         } else {
             Menu obj;
             obj = menu.get();
             if(Boolean.FALSE.equals(obj.getStatus())){
+                log.debug(" Menu item is in-active, please set the status to active to get item details");
                 throw new ResourceNotFoundException("Menu item is in-active, please set the status to active to get item details");
             }
             return obj;
@@ -48,6 +52,7 @@ public class MenuServiceImpl implements MenuService {
         Pageable paging =  PageRequest.of(page,size);
         Optional<List<Menu>> menu = menuRepository.findByCategoryIgnoreCase(category, paging);
         if (menu.isEmpty()) {
+            log.debug(" Category " + category + " not found");
             throw new InvalidInputException("Category " + category + " not found");
         } else {
             List<Menu> menuList = new ArrayList<>();
@@ -57,6 +62,7 @@ public class MenuServiceImpl implements MenuService {
                 }
             }
             if(menuList.isEmpty()){
+                log.debug(" All Menu item's in "+category+" are in-active, please set the status to active to get item details");
                throw new ResourceNotFoundException("All Menu item's in "+category+" are in-active, please set the status to active to get item details");
             }
             return menuList;
@@ -71,11 +77,13 @@ public class MenuServiceImpl implements MenuService {
     public Menu findByMenuItem(String itemName) {
         Optional<Menu> menu = menuRepository.findByItemNameIgnoreCase(itemName);
         if (menu.isEmpty()) {
+            log.debug(" Menu item  " + itemName + " not found");
             throw new ResourceNotFoundException("Menu item  " + itemName + " not found");
         } else {
             Menu obj;
             obj = menu.get();
             if(Boolean.FALSE.equals(obj.getStatus())){
+                log.debug(" Menu item is in-active, please set the status to active to get item details");
                 throw new ResourceNotFoundException("Menu item is in-active, please set the status to active to get item details");
             }
             return obj;
@@ -87,6 +95,7 @@ public class MenuServiceImpl implements MenuService {
         Pageable paging =  PageRequest.of(page,size);
         Optional<List<Menu>> menuList = menuRepository.findByMenuTypeIgnoreCase(menuType,paging);
         if(menuList.isEmpty()){
+            log.debug(" No menu item for menu type: " + menuType +" found");
             throw new ResourceNotFoundException("No menu item for menu type: " + menuType +" found");
         }
         return menuList.get();
@@ -97,6 +106,7 @@ public class MenuServiceImpl implements MenuService {
         Pageable paging =  PageRequest.of(page,size);
        Optional<List<Menu>> menuList = menuRepository.findByStatus(status,paging);
        if(menuList.isEmpty()){
+           log.debug(" No menu item with status " + status +" exist in database");
            throw new ResourceNotFoundException("No menu item with status " + status +" exist in database");
        }
        return menuList.get();
@@ -118,6 +128,7 @@ public class MenuServiceImpl implements MenuService {
     public void updateMenuItem(String itemId, Menu updatedMenu) {
         Optional<Menu> menu = menuRepository.findByItemId(itemId);
         if (menu.isEmpty()) {
+            log.debug(" Menu item with id: " + itemId + " not found");
             throw new ResourceNotFoundException("Menu item with id: " + itemId + " not found");
         }
         menu.ifPresent(menuItem -> {
@@ -137,6 +148,7 @@ public class MenuServiceImpl implements MenuService {
     public void deleteMenuItem(String itemId) {
         Optional<Menu> menu = menuRepository.findByItemId(itemId);
         if (menu.isEmpty()) {
+            log.debug(" Menu item with id: " + itemId + " not found");
             throw new ResourceNotFoundException("Menu item with id: " + itemId + " not found");
         } else {
             menuRepository.deleteById(itemId);
@@ -158,6 +170,7 @@ public class MenuServiceImpl implements MenuService {
         Pageable paging =  PageRequest.of(page,size);
         Optional<List<Menu>> menus = menuRepository.findByMenuTypeAndCategoryIgnoreCase(menuType, category, paging);
         if(menus.isEmpty()){
+            log.debug(" Menu type " + menuType +  "and category "+ category+ " not found");
             throw new ResourceNotFoundException("Menu type " + menuType +  "and category "+ category+ " not found");
         } else {
             ArrayList<Menu> menuList = new ArrayList<>();
@@ -169,6 +182,7 @@ public class MenuServiceImpl implements MenuService {
             if(!menuList.isEmpty()){
                 return menuList;
             } else {
+                log.debug(" No active menu items found");
                 throw new ResourceNotFoundException("No active menu items found");
             }
         }

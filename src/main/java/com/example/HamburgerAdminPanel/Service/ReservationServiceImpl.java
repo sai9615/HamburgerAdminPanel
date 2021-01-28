@@ -4,6 +4,7 @@ import com.example.HamburgerAdminPanel.Entity.Reservation;
 import com.example.HamburgerAdminPanel.Exception.InvalidInputException;
 import com.example.HamburgerAdminPanel.Exception.ResourceNotFoundException;
 import com.example.HamburgerAdminPanel.Repository.ReservationRepository;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class ReservationServiceImpl implements ReservationService {
 
     @Autowired
@@ -31,6 +33,7 @@ public class ReservationServiceImpl implements ReservationService {
         if (reservation.isPresent()) {
             return reservation.get();
         } else {
+            log.debug(" Reservation with First Name" + firstName + " not found");
             throw new ResourceNotFoundException("Reservation with First Name" + firstName + " not found");
         }
     }
@@ -45,6 +48,7 @@ public class ReservationServiceImpl implements ReservationService {
         if (reservation.isPresent()) {
             return reservation.get();
         } else {
+            log.debug(" Reservation with Last Name" + lastName + " not found");
             throw new ResourceNotFoundException("Reservation with Last Name" + lastName + " not found");
         }
     }
@@ -59,6 +63,7 @@ public class ReservationServiceImpl implements ReservationService {
         if (reservation.isPresent()) {
             return reservation.get();
         } else {
+            log.debug(" Reservation with id: " + id + " doesn't exist");
             throw new ResourceNotFoundException("Reservation with id: " + id + " doesn't exist");
         }
     }
@@ -82,10 +87,12 @@ public class ReservationServiceImpl implements ReservationService {
         List<Reservation> allReservations = reservationRepository.findAll();
         reservations.forEach(reservation -> {
                     if (reservation.getDay().before(currentDate)) {
+                        log.debug(" Please select a date after current date");
                         throw new InvalidInputException("Please select a date after current date");
                     }
                     for (Reservation reserve : allReservations) {
                         if (reserve.getDay().equals(reservation.getDay())) {
+                            log.debug(" Can't reserve, reservation exist for id: " + reserve.getReservationId() + " on day " + reserve.getDay());
                             throw new InvalidInputException("Can't reserve, reservation exist for id: " + reserve.getReservationId() + " on day " + reserve.getDay());
                         }
                     }
@@ -103,15 +110,18 @@ public class ReservationServiceImpl implements ReservationService {
     public void updateReservation(String id, Reservation reservation) {
         val reservationOptional = reservationRepository.findByReservationId(id);
         if (reservationOptional.isEmpty()) {
+            log.debug(" Reservation with id: " + id + " doesn't exist");
             throw new ResourceNotFoundException("Reservation with id: " + id + " doesn't exist");
         }
         Date currentDate = new Date();
         if (reservation.getDay().before(currentDate)) {
+            log.debug(" Please select a date after current date");
             throw new InvalidInputException("Please select a date after current date");
         }
         List<Reservation> allReservations = reservationRepository.findAll();
         for (Reservation reserve : allReservations) {
             if (reserve.getDay().equals(reservation.getDay())) {
+                log.debug(" Can't reserve, reservation exist for id: " + reserve.getReservationId());
                 throw new InvalidInputException("Can't reserve, reservation exist for id: " + reserve.getReservationId());
             }
         }
@@ -132,6 +142,7 @@ public class ReservationServiceImpl implements ReservationService {
         if (reservation.isPresent()) {
             reservationRepository.deleteById(id);
         } else {
+            log.debug( "Reservation with id: " + id + " doesn't exist" );
             throw new InvalidInputException("Reservation with id: " + id + " doesn't exist");
         }
     }

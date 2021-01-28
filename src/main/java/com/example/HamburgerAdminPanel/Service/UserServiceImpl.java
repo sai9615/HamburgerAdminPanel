@@ -3,6 +3,7 @@ package com.example.HamburgerAdminPanel.Service;
 import com.example.HamburgerAdminPanel.Entity.User;
 import com.example.HamburgerAdminPanel.Exception.ResourceNotFoundException;
 import com.example.HamburgerAdminPanel.Repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@Slf4j
 public class UserServiceImpl implements UserService{
     @Autowired
     UserRepository userRepository;
@@ -23,6 +25,7 @@ public class UserServiceImpl implements UserService{
     public User findByUserEmail(String emailId) {
         Optional<User> user = userRepository.findByEmail(emailId);
         if (user.isEmpty()){
+            log.debug( "User with emailId: "+emailId+" doesn't exist");
             throw new ResourceNotFoundException("User with emailId: "+emailId+" doesn't exist");
         }
         return user.get();
@@ -32,6 +35,7 @@ public class UserServiceImpl implements UserService{
     public Optional<User> findByUserName(String userName) {
         Optional<User> user = userRepository.findByUserName(userName);
         if (user.isEmpty()){
+            log.debug(" User with emailId: "+userName+" doesn't exist");
             throw new ResourceNotFoundException("User with emailId: "+userName+" doesn't exist");
         }
         return user;
@@ -46,6 +50,7 @@ public class UserServiceImpl implements UserService{
     public void addUser(User user) {
             Optional<User> userExist =userRepository.findByUserName(user.getUserName());
             if(!userExist.isEmpty()) {
+                log.debug( " User already exist in the database");
                 throw new RuntimeException("User already exist in the database");
             }
         String pass= user.getPassword();
@@ -59,6 +64,7 @@ public class UserServiceImpl implements UserService{
         try {
             userRepository.deleteByUserName(userName);
         } catch (Exception e){
+            log.debug(" User name: "+userName+" not found");
             throw new ResourceNotFoundException("User name: "+userName+" not found");
         }
     }
@@ -68,6 +74,7 @@ public class UserServiceImpl implements UserService{
         try {
             userRepository.deleteAll();
         } catch (Exception e){
+            log.debug( " Internal server error");
             throw new ResourceNotFoundException("Internal error");
         }
     }
